@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -7,21 +8,30 @@ import java.util.Queue;
 
 public class ALGraph
 {
-    private HashSet<GNode> nodes;
+    private ArrayList<GNode> nodes;
     
     /**
      * Constructor
      */
     public ALGraph() {
-    	nodes = new HashSet<GNode>();
+    	nodes = new ArrayList<GNode>();
     }
     
     /**
-     * Add a new Node to the graph
+     * Create a new GNode
+     * @param data
+     * @return The new GNode
+     */
+    public GNode createNode(Object data) {
+    	GNode node = new GNode(data);
+    	return node;
+    }
+    
+    /**
+     * Add an already instantiated GNode to the graph.
      * @param data
      */
-    public void addNode(Object data) {
-    	GNode node = new GNode(data);
+    public void addNode(GNode node) {
     	nodes.add(node);
     }
     
@@ -30,7 +40,7 @@ public class ALGraph
      * I only use this method for testing.
      * @param the set of nodes
      */
-    public HashSet<GNode> getNodes() {
+    public ArrayList<GNode> getNodes() {
     	return nodes;
     }
     
@@ -53,7 +63,7 @@ public class ALGraph
     	
     	while (!myQ.isEmpty()) {
     		GNode currentNode = myQ.poll();
-    		HashSet<GEdge> edges = currentNode.getEdges();
+    		ArrayList<GEdge> edges = currentNode.getEdges();
     		for (GEdge edge : edges) {
     			GNode neighbor = edge.getDestination();
     			if (neighbor.getColor() == Color.white) {
@@ -92,7 +102,7 @@ public class ALGraph
     	int time = t + 1;
     	node.setDiscoveryTime(time);
     	node.setColor(Color.gray);
-    	HashSet<GEdge> edges = node.getEdges();
+    	ArrayList<GEdge> edges = node.getEdges();
     	for (GEdge edge : edges) {
     		GNode neighbor = edge.getDestination();
     		if (neighbor.getColor() == Color.white) {
@@ -111,17 +121,26 @@ public class ALGraph
      */
     public void dijkstra(GNode n) {
     	initializeSingleSource(n);
-    	HashSet<GNode> finishedNodes = new HashSet<GNode>();
+    	ArrayList<GNode> finishedNodes = new ArrayList<GNode>();
     	Comparator<GNode> distanceComparator = new NodeDistanceComparator();
     	PriorityQueue<GNode> minDistanceQ = new PriorityQueue<GNode>(nodes.size(), distanceComparator);
     	for (GNode node : nodes) {
     		minDistanceQ.add(node);
     	}
     	
+    	GNode node;
+    	boolean atOrigin = true;
     	while (minDistanceQ.size() > 0) {
-    		GNode node = minDistanceQ.poll();
+    		if (atOrigin) {
+    			node = n;
+    			minDistanceQ.remove(node);
+    			atOrigin = false;
+    		}
+    		else {
+    			node = minDistanceQ.poll();
+    		}
     		finishedNodes.add(node);
-    		HashSet<GEdge> edges = node.getEdges();
+    		ArrayList<GEdge> edges = node.getEdges();
     		for (GEdge edge : edges) {
     			// Relax
     			double edgeWeight = edge.getWeight();
@@ -143,9 +162,9 @@ public class ALGraph
      * Initialize the graph.
      * @param origin 
      */
-    public void initializeSingleSource(GNode origin) {
+    private void initializeSingleSource(GNode origin) {
     	for (GNode node : nodes) {
-    		node.setDistance(-1);
+    		node.setDistance(Double.MAX_VALUE);
     		node.setPrev(null);
     	}
     	origin.setDistance(0);

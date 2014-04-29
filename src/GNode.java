@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.Color;
 
 public class GNode
 {
     private Object data;
-    private HashSet<GEdge> edges;
+    private ArrayList<GEdge> edges;
     private double distance;  // For path-finding algorithms
     private GNode prev;   // For path-finding algorithms
     private Color color;  // For DFS and BFS
@@ -17,14 +18,14 @@ public class GNode
      */
     public GNode(Object data) {
     	this.data = data;
-    	edges = new HashSet<GEdge>();
+    	edges = new ArrayList<GEdge>();
     }
     
     /**
      * Return the HashSet of this node's edges
      * @return the edges
      */
-    public HashSet<GEdge> getEdges() {
+    public ArrayList<GEdge> getEdges() {
     	return edges;
     }
     
