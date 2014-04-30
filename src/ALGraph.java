@@ -145,8 +145,7 @@ public class ALGraph
     			// Relax
     			double edgeWeight = edge.getWeight();
     			GNode neighbor = edge.getDestination();
-    			if (neighbor.getDistance() < 0 || // Is the delimiter value
-    					node.getDistance() + edgeWeight < neighbor.getDistance()) {
+    			if (node.getDistance() + edgeWeight < neighbor.getDistance()) {
     	    		neighbor.setDistance(node.getDistance() + edgeWeight);
     	    		neighbor.setPrev(node);
     	    		// Resort the queue to account for the changed distances
