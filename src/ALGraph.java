@@ -37,7 +37,6 @@ public class ALGraph
     
     /**
      * Return a set of all the nodes in the graph.
-     * I only use this method for testing.
      * @param the set of nodes
      */
     public ArrayList<GNode> getNodes() {
