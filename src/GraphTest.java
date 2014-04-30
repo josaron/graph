@@ -10,7 +10,7 @@ public class GraphTest {
     	GraphTest tester = new GraphTest();
     	//tester.minQTest();
     	//tester.dijkstraTest();
-    	tester.BFSTest();
+    	//tester.BFSTest();
     	tester.DFSTest();
     }
     
@@ -58,6 +58,16 @@ public class GraphTest {
     		String finish = node.getFinishTime() + "";
     		System.out.println("Node " + nodeName + ": "
     				+ "Discovery- " + discovery + ", Finish- " + finish); 
+    	}
+    	System.out.println();
+    	System.out.println("Edge Types:");
+    	for (GNode node : graph.getNodes()) {
+    		for (GEdge edge : node.getEdges()) {
+    			String origin = edge.getOrigin().getData().toString();
+    			String dest = edge.getDestination().getData().toString();
+    			GEdgeType type = edge.getEdgeType();
+    			System.out.println(origin + " -> " + dest + ": " + type);
+    		}
     	}
     	System.out.println();
     }

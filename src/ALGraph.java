@@ -104,15 +104,53 @@ public class ALGraph
     	ArrayList<GEdge> edges = node.getEdges();
     	for (GEdge edge : edges) {
     		GNode neighbor = edge.getDestination();
-    		if (neighbor.getColor() == Color.white) {
+    		if (neighbor.getColor() == Color.gray) {
+    			edge.setEdgeType(GEdgeType.BACK);
+    		}
+    		else if (neighbor.getColor() == Color.black){
+    			if (inSameTree(node, neighbor)) {
+    				edge.setEdgeType(GEdgeType.FORWARD);
+    			}
+    			else {
+    				edge.setEdgeType(GEdgeType.CROSS);
+    			}
+    		}
+    		else if (neighbor.getColor() == Color.white) {
+    			edge.setEdgeType(GEdgeType.TREE);
     			neighbor.setPrev(node);
     			time = DFSVisit(neighbor, time);
-    		}
+    		}     		
     	}
     	node.setColor(Color.black);
     	time++;
     	node.setFinishTime(time);
     	return time;
+    }
+    
+    /**
+     * Helper method for Depth First Search.
+     * Check if two nodes are in the same tree.
+     * This is used to find whether and edge leading to a black colored 
+     * destination is a forward or cross edge.
+     * @param x One GNode
+     * @param y The other GNode
+     * @return Whether in the same tree
+     */
+    private boolean inSameTree(GNode x, GNode y) {
+    	ArrayList<GNode> xTree = new ArrayList<GNode>();
+    	GNode xParent = x;
+    	GNode yParent = y;
+    	while (xParent != null) {
+    		xTree.add(xParent);
+    		xParent = xParent.getPrev();
+    	}
+    	while (yParent != null) {
+    		if (xTree.contains(yParent)) {
+    			return true;
+    		}
+    		yParent = yParent.getPrev();
+    	}
+    	return false;
     }
     
     /**
