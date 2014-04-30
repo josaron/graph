@@ -9,15 +9,125 @@ public class GraphTest {
     public static void main(String[] args) {
     	GraphTest tester = new GraphTest();
     	//tester.minQTest();
-    	tester.dijkstraTest();
+    	//tester.dijkstraTest();
+    	//tester.BFSTest();
+    	tester.DFSTest();
     }
     
-    private void checkInitializeSingleSource() {
+    private void DFSTest() {
+    	System.out.println("Depth First Search Test");
+    	ALGraph graph = new ALGraph();
+    	// Create the nodes
+    	GNode u = graph.createNode("u");
+    	GNode v = graph.createNode("v");
+    	GNode w = graph.createNode("w");
+    	GNode x = graph.createNode("x");
+    	GNode y = graph.createNode("y");
+    	GNode z = graph.createNode("z");
+    	// Create the edges
+    	u.addEdge(x, 1);
+    	u.addEdge(v, 1);
+    	v.addEdge(y, 1);
+    	w.addEdge(y, 1);
+    	w.addEdge(z, 1);
+    	x.addEdge(v, 1);
+    	y.addEdge(x, 1);
+    	z.addEdge(z, 1);
+    	// Add nodes to the graph
+    	graph.addNode(u);
+    	graph.addNode(v);
+    	graph.addNode(w);
+    	graph.addNode(x);
+    	graph.addNode(y);
+    	graph.addNode(z);
     	
+    	graph.DFS();
+    	
+    	System.out.println("Expected:");
+    	System.out.println("Node u: Discovery- 1.0, Finish- 8.0"
+    			+ "\nNode v: Discovery- 2.0, Finish- 7.0"
+    			+ "\nNode w: Discovery- 9.0, Finish- 12.0"
+    			+ "\nNode x: Discovery- 4.0, Finish- 5.0"
+    			+ "\nNode y: Discovery- 3.0, Finish- 6.0"
+    			+ "\nNode z: Discovery- 10.0, Finish- 11.0");
+    	
+    	System.out.println("Actual:");
+    	for (GNode node : graph.getNodes()) {
+    		String nodeName = node.getData() + "";
+    		String discovery = node.getDiscoveryTime() + "";
+    		String finish = node.getFinishTime() + "";
+    		System.out.println("Node " + nodeName + ": "
+    				+ "Discovery- " + discovery + ", Finish- " + finish); 
+    	}
+    	System.out.println();
+    }
+
+    private void BFSTest() {
+    	System.out.println("Breadth First Search Test");
+    	ALGraph graph = new ALGraph();
+    	// Create the nodes
+    	GNode r = graph.createNode("r");
+    	GNode s = graph.createNode("s");
+    	GNode t = graph.createNode("t");
+    	GNode u = graph.createNode("u");
+    	GNode v = graph.createNode("v");
+    	GNode w = graph.createNode("w");
+    	GNode x = graph.createNode("x");
+    	GNode y = graph.createNode("y");
+    	// Create the edges
+    	r.addEdge(s, 1);
+    	r.addEdge(v, 1);
+    	v.addEdge(r, 1);
+    	s.addEdge(r, 1);
+    	s.addEdge(w, 1);
+    	w.addEdge(s, 1);
+    	w.addEdge(t, 1);
+    	w.addEdge(x, 1);
+    	t.addEdge(w, 1);
+    	t.addEdge(x, 1);
+    	t.addEdge(u, 1);
+    	x.addEdge(w, 1);
+    	x.addEdge(t, 1);
+    	x.addEdge(u, 1);
+    	x.addEdge(y, 1);
+    	u.addEdge(t, 1);
+    	u.addEdge(x, 1);
+    	u.addEdge(y, 1);
+    	y.addEdge(u, 1);
+    	y.addEdge(x, 1);
+    	// Add nodes to the graph
+    	graph.addNode(r);
+    	graph.addNode(s);
+    	graph.addNode(t);
+    	graph.addNode(u);
+    	graph.addNode(v);
+    	graph.addNode(w);
+    	graph.addNode(x);
+    	graph.addNode(y);
+    	
+    	graph.BFS(s);
+    	
+    	System.out.println("Expected:");
+    	System.out.println("Distance of node r: 1.0 "
+    			+ "\nDistance of node s: 0.0 "
+    			+ "\nDistance of node t: 2.0 "
+    			+ "\nDistance of node u: 3.0"
+    			+ "\nDistance of node v: 2.0"
+    			+ "\nDistance of node w: 1.0"
+    			+ "\nDistance of node x: 2.0"
+    			+ "\nDistance of node y: 3.0");
+    	
+    	System.out.println("Actual:");
+    	for (GNode node : graph.getNodes()) {
+    		String nodeName = node.getData().toString();
+    		String distance = node.getDistance() + "";
+    		System.out.println("Distance of node " + nodeName + ": " + distance);
+    	}
+    	System.out.println();
     }
     
     private void dijkstraTest() {
-    	System.out.println("Dijkstra's Algorithm Test:");
+    	System.out.println("Dijkstra's Algorithm Test");
     	ALGraph graph = new ALGraph();
     	// Create the nodes
     	GNode s = graph.createNode("s");
@@ -45,6 +155,15 @@ public class GraphTest {
     	
     	graph.dijkstra(s);
     	
+    	System.out.println("Expected:");
+    	System.out.println("Node s: 0.0"
+    			+ "\nNode t: 8.0 "
+    			+ "\nNode x: 9.0 "
+    			+ "\nNode y: 5.0 "
+    			+ "\nNode z: 7.0");
+    	System.out.println();
+    	
+    	System.out.println("Actual:");
     	ArrayList<GNode> nodes = graph.getNodes();
     	for (GNode node : nodes) {
     		String nodeName = node.getData().toString();
@@ -54,7 +173,7 @@ public class GraphTest {
     }
     
     private void minQTest() {
-    	System.out.println("Min Queue Test:");
+    	System.out.println("Min Queue Test");
     	ALGraph graph = new ALGraph();
     	// create nodes and distances
     	GNode n5 = graph.createNode("Hello");
