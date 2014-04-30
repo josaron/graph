@@ -10,7 +10,7 @@ public class GraphTest {
     	GraphTest tester = new GraphTest();
     	//tester.minQTest();
     	//tester.dijkstraTest();
-    	//tester.BFSTest();
+    	tester.BFSTest();
     	tester.DFSTest();
     }
     

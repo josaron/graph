@@ -88,7 +88,7 @@ public class ALGraph
     	int time = 0;
     	for (GNode node : nodes) {
     		if (node.getColor() == Color.white) {
-    			DFSVisit(node, time);
+    			time = DFSVisit(node, time);
     		}
     	}
     }
@@ -97,7 +97,7 @@ public class ALGraph
      * Helper method for DFS
      * @param the node from which to run the DFS
      */
-    private void DFSVisit(GNode node, int t) {
+    private int DFSVisit(GNode node, int t) {
     	int time = t + 1;
     	node.setDiscoveryTime(time);
     	node.setColor(Color.gray);
@@ -106,12 +106,13 @@ public class ALGraph
     		GNode neighbor = edge.getDestination();
     		if (neighbor.getColor() == Color.white) {
     			neighbor.setPrev(node);
-    			DFSVisit(neighbor, time);
+    			time = DFSVisit(neighbor, time);
     		}
     	}
     	node.setColor(Color.black);
     	time++;
     	node.setFinishTime(time);
+    	return time;
     }
     
     /**
