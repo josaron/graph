@@ -5,10 +5,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Stack;
 
 public class ALGraph
 {
     private ArrayList<GNode> nodes;
+    private Stack<GEdge> stack;
     
     /**
      * Constructor
@@ -206,5 +208,127 @@ public class ALGraph
     	}
     	origin.setDistance(0);
     }
-
+    
+    /**
+     * Find the biconnected components in the graph.
+     */
+    public void biconnectedComponents() {
+    	int count = 0;
+    	stack = new Stack<GEdge>();
+    	for (GNode node : nodes) {
+    		node.setVisited(false);
+    		node.setPrev(null);
+    	}
+    	for (GNode node : nodes) {
+    		if (!node.isVisited()) {
+    			biconnectedDFSVisit(node, count);
+    		}
+    	}
+    }
+    
+    /**
+     * Helper method for biconnectedComponents().
+     * @param the node from which to perform the DFS Visit.
+     * @param the count of the discovery time.
+     * @return the new discovery time
+     */
+    private int biconnectedDFSVisit(GNode node, int c) {
+    	node.setVisited(true);
+    	int count = c++;
+    	node.setDiscoveryTime(count);
+    	node.setLow(node.getDiscoveryTime());
+    	ArrayList<GEdge> edges = node.getEdges();
+    	for (GEdge edge : edges) {
+    		GNode neighbor = edge.getDestination();
+    		if (!neighbor.isVisited()) {
+    			stack.push(edge);
+    			neighbor.setPrev(node);
+    			count = biconnectedDFSVisit(neighbor, count);
+    			if (neighbor.getLow() >= node.getDiscoveryTime()) {
+    				printComponent(edge);
+    			}
+    			node.setLow(Math.min(node.getLow(), neighbor.getLow()));
+    		}
+    		else if (node.getPrev() != neighbor && 
+    				neighbor.getDiscoveryTime() < node.getDiscoveryTime()) {
+    			// 'edge' is a back edge from 'node' to its ancestor 'neighbor'
+    			stack.push(edge);
+    			node.setLow(Math.min(node.getLow(), neighbor.getDiscoveryTime()));
+    		}
+    	}
+    	return count;
+    }
+    
+    /**
+     * Helper method for biconnectedComponents().
+     * Print the edges in a biconnected component.
+     * @param edge
+     */
+    private void printComponent(GEdge edge) {
+    	System.out.println("New Biconnected Component Found:");
+    	GEdge popped = stack.pop();
+    	while (popped != edge) {
+    		System.out.println(popped.toString());
+    		popped = stack.pop();
+    	}
+    	System.out.println(popped.toString());
+    }
+    
+    /**
+     * Find the articulation points in the graph.
+     * @param node
+     */
+    public void findArtPoints(GNode node) {
+    	int count = 0;
+    	assignDiscovery(node, count);
+    	assignLow(node);
+    }
+    
+    /**
+     * Helper method for findArtPoints().
+     * Assign the discovery time for each node.
+     * @param node
+     * @param count
+     */
+    private void assignDiscovery(GNode node, int count) {
+    	count++;
+    	node.setDiscoveryTime(count);
+    	node.setVisited(true);
+    	ArrayList<GEdge> edges = node.getEdges();
+    	for (GEdge edge : edges) {
+    		GNode neighbor = edge.getDestination();
+    		if (!neighbor.isVisited()) {
+    			neighbor.setPrev(node);
+    			assignDiscovery(neighbor, count);
+    		}
+    	}
+    }
+    
+    /**
+     * Helper method for findArtPoints().
+     * Assign the low for each node and print articulation points.
+     * @param node
+     */
+    private void assignLow(GNode node) {
+    	node.setLow(node.getDiscoveryTime());
+    	ArrayList<GEdge> edges =  node.getEdges();
+    	for (GEdge edge : edges) {
+    		GNode neighbor = edge.getDestination();
+    		if (neighbor.getDiscoveryTime() > node.getDiscoveryTime()) {
+    			// Forward edge
+    			assignLow(neighbor);
+    			if (neighbor.getLow() >= node.getDiscoveryTime()) {
+    				System.out.println(node.getData() + " is an articulation point.");
+    			}
+    			node.setLow(Math.min(node.getLow(), neighbor.getLow()));
+    		}
+    		else if (node.getPrev() != neighbor) {
+    			// Back edge
+    			node.setLow(Math.min(node.getLow(), neighbor.getDiscoveryTime()));
+    		}
+    	}
+    }
+    
+    
+    
 }

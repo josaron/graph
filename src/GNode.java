@@ -12,6 +12,10 @@ public class GNode
     private double discoveryTime; // For DFS
     private double finishTime; // For DFS
     
+    //for art. points
+    private double low;
+    private boolean visited;
+    
     /**
      * Constructor
      * @param data
@@ -120,5 +124,24 @@ public class GNode
      */
     public double getFinishTime() {
     	return finishTime;
+    }
+    
+    
+    //
+    // GETTERS AND SETTERS FOR ARTICULATION POINTS
+    //
+    public double getLow() {
+    	return low;
+    }
+    
+    public void setLow(double num) {
+    	low = num;
+    }
+    
+    public void setVisited(boolean bool) {
+    	visited = bool;
+    }
+    public boolean isVisited() {
+    	return visited;
     }
 }

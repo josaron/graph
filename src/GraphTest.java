@@ -11,7 +11,119 @@ public class GraphTest {
     	//tester.minQTest();
     	//tester.dijkstraTest();
     	//tester.BFSTest();
-    	tester.DFSTest();
+    	//tester.DFSTest();
+    	tester.artiPointsTest();
+    	//tester.biconnectedTest();
+    }
+    
+    private void biconnectedTest() {
+    	System.out.println("Biconnected Components Test");
+    	ALGraph graph = new ALGraph();
+    	// Create the nodes
+    	GNode a = graph.createNode("a");
+    	GNode b = graph.createNode("b");
+    	GNode c = graph.createNode("c");
+    	GNode d = graph.createNode("d");
+    	GNode e = graph.createNode("e");
+    	GNode f = graph.createNode("f");
+    	GNode g = graph.createNode("g");
+    	GNode h = graph.createNode("h");
+    	GNode i = graph.createNode("i");
+    	GNode j = graph.createNode("j");
+    	GNode k = graph.createNode("k");
+    	GNode l = graph.createNode("l");
+    	GNode m = graph.createNode("m");
+    	GNode n = graph.createNode("n");
+    	// Create the edges
+    	a.addEdge(b, 1);
+    	a.addEdge(c, 1);
+    	b.addEdge(a, 1);
+    	b.addEdge(d, 1);
+    	c.addEdge(a, 1);
+    	c.addEdge(d, 1);
+    	d.addEdge(b, 1);
+    	d.addEdge(c, 1);
+    	d.addEdge(e, 1);
+    	e.addEdge(d, 1);
+    	e.addEdge(f, 1);
+    	f.addEdge(j, 1);
+    	f.addEdge(e, 1);
+    	j.addEdge(i, 1);
+    	j.addEdge(f, 1);
+    	j.addEdge(g, 1);
+    	j.addEdge(k, 1);
+    	g.addEdge(j, 1);
+    	k.addEdge(j, 1);
+    	k.addEdge(h, 1);
+    	k.addEdge(n, 1);
+    	h.addEdge(k, 1);
+    	n.addEdge(k, 1);
+    	n.addEdge(m, 1);
+    	m.addEdge(n, 1);
+    	m.addEdge(i, 1);
+    	m.addEdge(l, 1);
+    	l.addEdge(i, 1);
+    	l.addEdge(m, 1);
+    	i.addEdge(l, 1);
+    	i.addEdge(m, 1);
+    	i.addEdge(j, 1);
+    	// Add the nodes
+    	graph.addNode(a);
+    	graph.addNode(b);
+    	graph.addNode(c);
+    	graph.addNode(d);
+    	graph.addNode(e);
+    	graph.addNode(f);
+    	graph.addNode(g);
+    	graph.addNode(h);
+    	graph.addNode(i);
+    	graph.addNode(j);
+    	graph.addNode(k);
+    	graph.addNode(l);
+    	graph.addNode(m);
+    	graph.addNode(n);
+    	
+    	graph.biconnectedComponents();
+    }
+    
+    private void artiPointsTest() {
+    	System.out.println("Articulation Points Test:");
+    	ALGraph graph = new ALGraph();
+    	// Create the nodes
+    	GNode a = graph.createNode("a");
+    	GNode b = graph.createNode("b");
+    	GNode c = graph.createNode("c");
+    	GNode d = graph.createNode("d");
+    	GNode e = graph.createNode("e");
+    	GNode f = graph.createNode("f");
+    	GNode g = graph.createNode("g");
+    	// Create the edges
+    	a.addEdge(b, 1);
+    	a.addEdge(d, 1);
+    	b.addEdge(a, 1);
+    	b.addEdge(c, 1);
+    	c.addEdge(b, 1);
+    	c.addEdge(d, 1);
+    	c.addEdge(g, 1);
+    	g.addEdge(c, 1);
+    	d.addEdge(a, 1);
+    	d.addEdge(c, 1);
+    	d.addEdge(e, 1);
+    	d.addEdge(f, 1);
+    	f.addEdge(d, 1);
+    	f.addEdge(e, 1);
+    	e.addEdge(f, 1);
+    	e.addEdge(d, 1);
+    	// Add nodes to the graph
+    	graph.addNode(a);
+    	graph.addNode(b);
+    	graph.addNode(c);
+    	graph.addNode(d);
+    	graph.addNode(e);
+    	graph.addNode(f);
+    	graph.addNode(g);
+    	
+    	graph.findArtPoints(c);
     }
     
     private void DFSTest() {

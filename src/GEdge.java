@@ -64,4 +64,12 @@ public class GEdge
     public void setEdgeType(GEdgeType type) {
     	edgeType = type;
     }
+    
+    /**
+     * Convert the edge to a string for printing.
+     * @return The edge in a string form.
+     */
+    public String toString() {
+    	return origin.getData() + " -> " + destination.getData();
+    }
 }
